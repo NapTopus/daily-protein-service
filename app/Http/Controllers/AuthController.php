@@ -30,7 +30,7 @@ class AuthController extends Controller
         if (!auth()->attempt($validated)) {
             return response()->json([
                 'message' => 'Invalid credentials',
-            ], 422);
+            ], 401);
         }
 
         $user = auth()->user();

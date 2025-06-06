@@ -10,4 +10,9 @@ class Item extends Model
         'name',
         'protein',
     ];
+
+    public function record()
+    {
+        return $this->belongsTo(Record::class);
+    }
 }

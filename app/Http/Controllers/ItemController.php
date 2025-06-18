@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Data\ItemData;
+use App\Data\StoreItemData;
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
 use App\Services\ItemService;
@@ -16,7 +16,7 @@ class ItemController extends Controller
 
     public function store(StoreItemRequest $request)
     {
-        $itemData = new ItemData(
+        $itemData = new StoreItemData(
             $request->input('name'),
             $request->input('protein'),
             $request->input('date')

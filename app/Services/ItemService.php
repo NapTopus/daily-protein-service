@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Data\ItemData;
+use App\Data\StoreItemData;
 use App\Data\UpdateItemData;
 use App\Models\Item;
 use App\Models\Record;
@@ -18,7 +18,7 @@ class ItemService
     {
     }
 
-    public function createWithRecord(ItemData $itemData, User $user): Item
+    public function createWithRecord(StoreItemData $itemData, User $user): Item
     {
         try {
             $date = Carbon::parse($itemData->date);

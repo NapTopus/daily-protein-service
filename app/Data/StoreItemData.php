@@ -2,7 +2,7 @@
 
 namespace App\Data;
 
-class ItemData
+class StoreItemData
 {
     public function __construct(
         public string $name,

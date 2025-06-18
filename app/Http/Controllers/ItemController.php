@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Data\ItemData;
 use App\Http\Requests\StoreItemRequest;
+use App\Http\Requests\UpdateItemRequest;
 use App\Services\ItemService;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
@@ -26,5 +25,10 @@ class ItemController extends Controller
         $this->itemService->createWithRecord($itemData, auth()->user());
 
         return response()->noContent();
+    }
+
+    public function update(UpdateItemRequest $request, int $id)
+    {
+        $this->itemService->update($id, $request->validated(), auth()->user());
     }
 }

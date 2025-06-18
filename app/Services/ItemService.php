@@ -3,13 +3,21 @@
 namespace App\Services;
 
 use App\Data\ItemData;
+use App\Data\UpdateItemData;
 use App\Models\Item;
 use App\Models\Record;
 use App\Models\User;
+use App\Repositories\ItemRepository;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Carbon;
 
 class ItemService
 {
+    public function __construct(private readonly ItemRepository $itemRepository)
+    {
+    }
+
     public function createWithRecord(ItemData $itemData, User $user): Item
     {
         try {
@@ -27,5 +35,20 @@ class ItemService
             'name'    => $itemData->name,
             'protein' => $itemData->protein
         ]);
+    }
+
+    public function update(int $id, array $requestData, User $user): void
+    {
+        $item = $this->itemRepository->findById($id);
+        if (!$item) {
+            throw new ModelNotFoundException("Not Found");
+        }
+
+        if ($user->cannot('update', $item)) {
+            throw new AuthorizationException();
+        }
+
+        $updateData = UpdateItemData::fromRequest($requestData);
+        $this->itemRepository->update($item, $updateData);
     }
 }

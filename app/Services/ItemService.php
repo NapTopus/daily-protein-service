@@ -39,6 +39,10 @@ class ItemService
 
     public function update(int $id, array $requestData, User $user): void
     {
+        if (empty($requestData)) {
+            return;
+        }
+
         $item = $this->itemRepository->findById($id);
         if (!$item) {
             throw new ModelNotFoundException("Not Found");

@@ -30,7 +30,7 @@ class ItemServiceTest extends TestCase
     public function it_creates_item_and_record_if_record_not_exists()
     {
         $user          = User::factory()->create();
-        $date          = Carbon::parse('2025-06-06');
+        $date          = '2025-06-06';
         $StoreItemData = new StoreItemData(
             name: 'Chicken',
             protein: 30.5,
@@ -41,27 +41,23 @@ class ItemServiceTest extends TestCase
 
         $this->assertDatabaseHas('records', [
             'user_id' => $user->id,
-            'date'    => $date->toDateString(),
+            'date'    => $date,
             'target'  => 100,
         ]);
 
         $this->assertDatabaseHas('items', [
             'name'      => 'Chicken',
             'protein'   => 30.5,
-            'record_id' => Record::where('user_id', $user->id)->where('date', $date->toDateString())->first()->id,
+            'record_id' => Record::where('user_id', $user->id)->where('date', $date)->first()->id,
         ]);
     }
 
     #[Test]
     public function it_creates_item_with_existing_record()
     {
-        $user = User::factory()->create();
-        $date = Carbon::parse('2025-06-06');
-
-        $record = Record::factory()->create([
-            'user_id' => $user->id,
-            'date'    => $date->toDateString(),
-        ]);
+        $user   = User::factory()->create();
+        $date   = '2025-06-06';
+        $record = Record::factory()->state(['date' => $date])->for($user)->create();
 
         $StoreItemData = new StoreItemData(
             name: 'Egg',
@@ -71,7 +67,7 @@ class ItemServiceTest extends TestCase
 
         $this->itemService->createWithRecord($StoreItemData, $user);
 
-        $this->assertEquals(1, Record::where('user_id', $user->id)->where('date', $date->toDateString())->count());
+        $this->assertEquals(1, Record::where('user_id', $user->id)->where('date', $date)->count());
 
         $this->assertDatabaseHas('items', [
             'name'      => 'Egg',
@@ -81,10 +77,10 @@ class ItemServiceTest extends TestCase
     }
 
     #[Test]
-    public function it_uses_today_if_date_not_specified()
+    public function it_defaults_to_today_when_date_is_not_given()
     {
         $user  = User::factory()->create();
-        $today = Carbon::today();
+        $today = now()->toDateString();
 
         $StoreItemData = new StoreItemData(
             name: 'Tofu',
@@ -94,17 +90,23 @@ class ItemServiceTest extends TestCase
         $item = $this->itemService->createWithRecord($StoreItemData, $user);
 
         $this->assertDatabaseHas('items', [
-            'name'    => 'Tofu',
-            'protein' => 8.0,
+            'name'      => 'Tofu',
+            'protein'   => 8.0,
+            'record_id' => $item->record_id
         ]);
-        $this->assertEquals($today->toDateString(), $item->record->date);
+        $this->assertEquals($today, $item->record->date);
+        $this->assertDatabaseHas('records', [
+            'id'      => $item->record_id,
+            'user_id' => $user->id,
+            'date'    => $today,
+        ]);
     }
 
     #[Test]
     public function it_uses_today_if_date_is_invalid()
     {
         $user  = User::factory()->create();
-        $today = Carbon::today();
+        $today = now()->toDateString();
 
         $StoreItemData = new StoreItemData(
             name: 'Tofu',
@@ -115,10 +117,16 @@ class ItemServiceTest extends TestCase
         $item = $this->itemService->createWithRecord($StoreItemData, $user);
 
         $this->assertDatabaseHas('items', [
-            'name'    => 'Tofu',
-            'protein' => 8.0,
+            'name'      => 'Tofu',
+            'protein'   => 8.0,
+            'record_id' => $item->record_id
         ]);
-        $this->assertEquals($today->toDateString(), $item->record->date);
+        $this->assertEquals($today, $item->record->date);
+        $this->assertDatabaseHas('records', [
+            'id'      => $item->record_id,
+            'user_id' => $user->id,
+            'date'    => $today
+        ]);
     }
 
     #[Test]

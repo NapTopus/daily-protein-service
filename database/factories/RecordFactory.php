@@ -18,8 +18,8 @@ class RecordFactory extends Factory
     public function definition(): array
     {
         return [
-            'date' => Carbon::today(),
-            'target' => 100,
+            'date'    => Carbon::today()->toDateString(),
+            'target'  => 100,
             'user_id' => 1,
         ];
     }

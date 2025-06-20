@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Data\StoreItemData;
-use App\Http\Requests\StoreItemRequest;
-use App\Http\Requests\UpdateItemRequest;
+use App\Http\Requests\Item\StoreItemRequest;
+use App\Http\Requests\Item\UpdateItemRequest;
 use App\Services\ItemService;
 
 class ItemController extends Controller

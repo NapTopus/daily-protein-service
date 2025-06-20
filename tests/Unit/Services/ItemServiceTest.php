@@ -7,7 +7,6 @@ use App\Models\Item;
 use App\Models\Record;
 use App\Models\User;
 use App\Services\ItemService;
-use Carbon\Carbon;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -29,15 +28,15 @@ class ItemServiceTest extends TestCase
     #[Test]
     public function it_creates_item_and_record_if_record_not_exists()
     {
-        $user          = User::factory()->create();
-        $date          = '2025-06-06';
-        $StoreItemData = new StoreItemData(
-            name: 'Chicken',
-            protein: 30.5,
-            date: $date
-        );
+        $user        = User::factory()->create();
+        $date        = '2025-06-06';
+        $requestData = [
+            'name'    => 'Chicken',
+            'protein' => 30.5,
+            'date'    => '2025-06-06'
+        ];
 
-        $this->itemService->createWithRecord($StoreItemData, $user);
+        $this->itemService->createWithRecordUpsert($requestData, $user);
 
         $this->assertDatabaseHas('records', [
             'user_id' => $user->id,
@@ -59,13 +58,13 @@ class ItemServiceTest extends TestCase
         $date   = '2025-06-06';
         $record = Record::factory()->state(['date' => $date])->for($user)->create();
 
-        $StoreItemData = new StoreItemData(
-            name: 'Egg',
-            protein: 12.0,
-            date: $date
-        );
+        $requestData = [
+            'name'    => 'Egg',
+            'protein' => 12.0,
+            'date'    => $date
+        ];
 
-        $this->itemService->createWithRecord($StoreItemData, $user);
+        $this->itemService->createWithRecordUpsert($requestData, $user);
 
         $this->assertEquals(1, Record::where('user_id', $user->id)->where('date', $date)->count());
 
@@ -82,12 +81,12 @@ class ItemServiceTest extends TestCase
         $user  = User::factory()->create();
         $today = now()->toDateString();
 
-        $StoreItemData = new StoreItemData(
-            name: 'Tofu',
-            protein: 8.0,
-        );
+        $requestData = [
+            'name'    => 'Tofu',
+            'protein' => 8.0
+        ];
 
-        $item = $this->itemService->createWithRecord($StoreItemData, $user);
+        $item = $this->itemService->createWithRecordUpsert($requestData, $user);
 
         $this->assertDatabaseHas('items', [
             'name'      => 'Tofu',
@@ -108,13 +107,13 @@ class ItemServiceTest extends TestCase
         $user  = User::factory()->create();
         $today = now()->toDateString();
 
-        $StoreItemData = new StoreItemData(
-            name: 'Tofu',
-            protein: 8.0,
-            date: 'invalid-date',
-        );
+        $requestData = [
+            'name'    => 'Tofu',
+            'protein' => 8.0,
+            'date'    => 'invalid-date',
+        ];
 
-        $item = $this->itemService->createWithRecord($StoreItemData, $user);
+        $item = $this->itemService->createWithRecordUpsert($requestData, $user);
 
         $this->assertDatabaseHas('items', [
             'name'      => 'Tofu',

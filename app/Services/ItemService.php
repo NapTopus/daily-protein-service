@@ -18,10 +18,12 @@ class ItemService
     {
     }
 
-    public function createWithRecord(StoreItemData $itemData, User $user): Item
+    public function createWithRecordUpsert(array $requestData, User $user): Item
     {
+        $storeData = StoreItemData::fromRequest($requestData);
+
         try {
-            $date = Carbon::parse($itemData->date);
+            $date = Carbon::parse($storeData->date);
         } catch (\Throwable $th) {
             $date = Carbon::today();
         }
@@ -32,8 +34,8 @@ class ItemService
         );
 
         return $record->items()->create([
-            'name'    => $itemData->name,
-            'protein' => $itemData->protein
+            'name'    => $storeData->name,
+            'protein' => $storeData->protein
         ]);
     }
 

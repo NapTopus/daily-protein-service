@@ -16,15 +16,7 @@ class ItemController extends Controller
 
     public function store(StoreItemRequest $request)
     {
-        $itemData = new StoreItemData(
-            $request->input('name'),
-            $request->input('protein'),
-            $request->input('date')
-        );
-
-        $this->itemService->createWithRecord($itemData, auth()->user());
-
-        return response()->noContent();
+        $this->itemService->createWithRecordUpsert($request->validated(), auth()->user());
     }
 
     public function update(UpdateItemRequest $request, int $id)

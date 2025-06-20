@@ -24,7 +24,7 @@ class ItemEndPointTest extends TestCase
         ];
 
         $response = $this->postJson('/api/item', $payload);
-        $response->assertStatus(204);
+        $response->assertStatus(200);
         $this->assertDatabaseHas('items', [
             "name"    => "egg",
             "protein" => 12

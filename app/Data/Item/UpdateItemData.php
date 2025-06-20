@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Data;
+namespace App\Data\Item;
 
 use App\Traits\ToUpdateArrayTrait;
 use Illuminate\Foundation\Http\FormRequest;

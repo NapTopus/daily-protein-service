@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Data\UpdateItemData;
+use App\Data\Item\UpdateItemData;
 use App\Models\Item;
 
 class ItemRepository

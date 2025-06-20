@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Data\StoreItemData;
-use App\Data\UpdateItemData;
+use App\Data\Item\StoreItemData;
+use App\Data\Item\UpdateItemData;
 use App\Models\Item;
 use App\Models\Record;
 use App\Models\User;

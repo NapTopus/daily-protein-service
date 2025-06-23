@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Services;
 
-use App\Data\StoreItemData;
 use App\Models\Item;
 use App\Models\Record;
 use App\Models\User;
@@ -198,5 +197,38 @@ class ItemServiceTest extends TestCase
     {
         $this->expectException(ModelNotFoundException::class);
         $this->itemService->update(1, ['protein' => 40], User::factory()->create());
+    }
+
+    #[Test]
+    public function it_deletes_item()
+    {
+        $user   = User::factory()->create();
+        $record = Record::factory()->for($user)->has(Item::factory())->create();
+        $item   = $record->items->first();
+
+        $this->itemService->destroy($item->id, $user);
+        $this->assertDatabaseMissing('items', ['id' => $item->id]);
+    }
+
+    #[Test]
+    public function it_does_not_allow_to_delete_item_from_another_user()
+    {
+        $user        = User::factory()->has(Record::factory()->has(Item::factory()))->create();
+        $item        = $user->records->first()->items->first();
+        $anotherUser = User::factory()->create();
+
+        $this->expectException(AuthorizationException::class);
+        $this->itemService->destroy($item->id, $anotherUser);
+    }
+
+    #[Test]
+    public function it_does_not_throw_if_id_is_not_found()
+    {
+        $user          = User::factory()->create();
+        $nonExistentId = 9999999;
+
+        $this->itemService->destroy($nonExistentId, $user);
+
+        $this->expectNotToPerformAssertions();
     }
 }

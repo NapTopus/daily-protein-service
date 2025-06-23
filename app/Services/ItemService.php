@@ -8,14 +8,17 @@ use App\Models\Item;
 use App\Models\Record;
 use App\Models\User;
 use App\Repositories\ItemRepository;
+use App\Repositories\RecordRepo;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Carbon;
 
 class ItemService
 {
-    public function __construct(private readonly ItemRepository $itemRepository)
-    {
+    public function __construct(
+        private readonly RecordRepo $recordRepo,
+        private readonly ItemRepository $itemRepository,
+    ) {
     }
 
     public function createWithRecordUpsert(array $requestData, User $user): Item
@@ -28,12 +31,9 @@ class ItemService
             $date = Carbon::today();
         }
 
-        $record = Record::firstOrCreate(
-            ['date' => $date->toDateString(), 'user_id' => $user->id],
-            ['target' => $user->default_target]
-        );
+        $record = $this->recordRepo->firstOrCreate($date, $user);
 
-        return $record->items()->create([
+        return $this->itemRepository->createForRecord($record, [
             'name'    => $storeData->name,
             'protein' => $storeData->protein
         ]);

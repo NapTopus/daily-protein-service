@@ -54,4 +54,18 @@ class ItemEndPointTest extends TestCase
             'record_id' => $record->id
         ]);
     }
+
+    #[Test]
+    public function it_can_delete_item()
+    {
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+
+        $record = Record::factory()->for($user)->has(Item::factory())->create();
+        $item   = $record->items->first();
+
+        $response = $this->deleteJson('/api/item/' . $item->id);
+        $response->assertStatus(200);
+        $this->assertDatabaseMissing('items', ['id' => $item->id]);
+    }
 }

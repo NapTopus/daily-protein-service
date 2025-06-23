@@ -18,4 +18,9 @@ class ItemRepository
         $item->save();
         return $item;
     }
+
+    public function deleteById(int $id)
+    {
+        Item::destroy($id);
+    }
 }

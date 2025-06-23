@@ -57,4 +57,17 @@ class ItemService
         $updateData = UpdateItemData::fromRequest($requestData);
         $this->itemRepository->update($item, $updateData);
     }
+
+    public function destroy(int $id, User $user)
+    {
+        $item = $this->itemRepository->findById($id);
+        if (!$item) {
+            return;
+        }
+
+        if ($user->cannot('delete', $item)) {
+            throw new AuthorizationException();
+        }
+        $this->itemRepository->deleteById($id);
+    }
 }

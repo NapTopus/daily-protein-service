@@ -22,4 +22,9 @@ class ItemController extends Controller
     {
         $this->itemService->update($id, $request->validated(), auth()->user());
     }
+
+    public function destroy(int $id)
+    {
+        $this->itemService->destroy($id, auth()->user());
+    }
 }

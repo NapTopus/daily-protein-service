@@ -5,9 +5,8 @@ namespace App\Services;
 use App\Data\Item\StoreItemData;
 use App\Data\Item\UpdateItemData;
 use App\Models\Item;
-use App\Models\Record;
 use App\Models\User;
-use App\Repositories\ItemRepository;
+use App\Repositories\ItemRepo;
 use App\Repositories\RecordRepo;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -17,7 +16,7 @@ class ItemService
 {
     public function __construct(
         private readonly RecordRepo $recordRepo,
-        private readonly ItemRepository $itemRepository,
+        private readonly ItemRepo $itemRepository,
     ) {
     }
 

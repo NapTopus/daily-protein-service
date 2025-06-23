@@ -6,7 +6,7 @@ use App\Data\Item\UpdateItemData;
 use App\Models\Item;
 use App\Models\Record;
 
-class ItemRepository
+class ItemRepo
 {
     public function createForRecord(Record $record, array $attributes): Item
     {

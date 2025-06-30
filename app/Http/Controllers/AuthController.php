@@ -7,6 +7,33 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
+    /**
+     *  @OA\Post(
+     *      path="/api/register",
+     *      summary="用戶註冊",
+     *      tags={"Auth"},
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              required={"name", "email", "password", "password_confirmation"},
+     *              type="object",
+     *              @OA\Property(property="name", type="string", example="your-name"),
+     *              @OA\Property(property="email", type="string", example="example@your-mail.com"),
+     *              @OA\Property(property="password", type="string", example="your-password"),
+     *              @OA\Property(property="password_confirmation", type="string", example="your-password")
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="OK"
+     *      ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="驗證失敗",
+     *          @OA\JsonContent(ref="#/components/schemas/InputError")
+     *      )
+     *  )
+     */
     public function register(Request $request)
     {
         $validated = $request->validate([
@@ -20,6 +47,31 @@ class AuthController extends Controller
         return response()->noContent();
     }
 
+    /**
+     *  @OA\Post(
+     *      path="/api/login",
+     *      summary="用戶登入",
+     *      tags={"Auth"},
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              required={"email", "password"},
+     *              type="object",
+     *              @OA\Property(property="email", type="string", example="example@your-mail.com"),
+     *              @OA\Property(property="password", type="string", example="your-password"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="OK"
+     *      ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="驗證失敗",
+     *          @OA\JsonContent(ref="#/components/schemas/InputError")
+     *      )
+     *  )
+     */
     public function login(Request $request)
     {
         $validated = $request->validate([

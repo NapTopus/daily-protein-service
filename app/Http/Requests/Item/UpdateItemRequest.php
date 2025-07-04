@@ -16,7 +16,6 @@ class UpdateItemRequest extends FormRequest
         return [
             'name'    => 'string|max:255',
             'protein' => 'numeric|gt:0|max:99999.99',
-            'date'    => 'date',
         ];
     }
 }

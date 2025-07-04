@@ -43,8 +43,6 @@ class AuthController extends Controller
         ]);
 
         User::create($validated);
-
-        return response()->noContent();
     }
 
     /**
@@ -63,7 +61,11 @@ class AuthController extends Controller
      *      ),
      *      @OA\Response(
      *          response=200,
-     *          description="OK"
+     *          description="OK",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="token", type="string", example="7|654FPqe0oZzujUfiCl8VYnsD09cnEhXxNbcrvwVG722155b9"),
+     *          )
      *      ),
      *      @OA\Response(
      *          response=422,

@@ -29,8 +29,7 @@ class AuthController extends Controller
      *      ),
      *      @OA\Response(
      *          response=422,
-     *          description="驗證失敗",
-     *          @OA\JsonContent(ref="#/components/schemas/InputError")
+     *          ref="#/components/responses/InvalidInput"
      *      )
      *  )
      */
@@ -69,8 +68,7 @@ class AuthController extends Controller
      *      ),
      *      @OA\Response(
      *          response=422,
-     *          description="驗證失敗",
-     *          @OA\JsonContent(ref="#/components/schemas/InputError")
+     *          ref="#/components/responses/InvalidInput"
      *      )
      *  )
      */

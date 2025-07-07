@@ -34,14 +34,12 @@ class ItemController extends Controller
      *          description="OK"
      *      ),
      *      @OA\Response(
-     *          response=422,
-     *          description="欄位驗證失敗",
-     *          @OA\JsonContent(ref="#/components/schemas/InputError")
+     *          response=403,
+     *          ref="#/components/responses/Unauthorized"
      *      ),
      *      @OA\Response(
-     *          response=403,
-     *          description="No permission, such as attempting to access or modify data belonging to another user.",
-     *          @OA\JsonContent(ref="#/components/schemas/Unauthorized")
+     *          response=422,
+     *          ref="#/components/responses/InvalidInput"
      *      )
      *  )
      */
@@ -73,14 +71,12 @@ class ItemController extends Controller
      *          description="OK"
      *      ),
      *      @OA\Response(
-     *          response=422,
-     *          description="欄位驗證失敗",
-     *          @OA\JsonContent(ref="#/components/schemas/InputError")
+     *          response=403,
+     *          ref="#/components/responses/Unauthorized"
      *      ),
      *      @OA\Response(
-     *          response=403,
-     *          description="No permission, such as attempting to access or modify data belonging to another user.",
-     *          @OA\JsonContent(ref="#/components/schemas/Unauthorized")
+     *          response=422,
+     *          ref="#/components/responses/InvalidInput"
      *      )
      *  )
      */
@@ -106,8 +102,7 @@ class ItemController extends Controller
      *      ),
      *      @OA\Response(
      *          response=403,
-     *          description="No permission, such as attempting to access or modify data belonging to another user.",
-     *          @OA\JsonContent(ref="#/components/schemas/Unauthorized")
+     *          ref="#/components/responses/Unauthorized"
      *      )
      *  )
      */

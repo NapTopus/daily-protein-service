@@ -8,7 +8,8 @@ class UpdateItemRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true;
+        $item = $this->route('item');
+        return $item && $this->user()->can('update', $item);
     }
 
     public function rules(): array

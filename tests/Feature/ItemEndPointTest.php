@@ -42,17 +42,43 @@ class ItemEndPointTest extends TestCase
         $record = Record::factory()->for($user)->has(Item::factory()->state(['name' => 'Chicken', 'protein' => 30.5]))->create();
         $item   = $record->items->first();
 
-        $payload = [
-            "protein" => 40
-        ];
-
-        $response = $this->patchJson('/api/item/' . $item->id, $payload);
+        $response = $this->patchJson('/api/item/' . $item->id, ['protein' => 40]);
         $response->assertStatus(200);
         $this->assertDatabaseHas('items', [
             'name'      => 'Chicken',
             'protein'   => 40,
             'record_id' => $record->id
         ]);
+    }
+
+    #[Test]
+    public function it_cannot_update_item_without_login()
+    {
+        $item     = Item::factory()->for(Record::factory()->for(User::factory()))->create();
+        $response = $this->patchJson('/api/item/' . $item->id, ['protein' => 40]);
+        $response->assertStatus(401);
+    }
+
+    #[Test]
+    public function it_cannot_update_item_from_another_user()
+    {
+        $user        = User::factory()->has(Record::factory()->has(Item::factory()))->create();
+        $item        = $user->records->first()->items->first();
+        $anotherUser = User::factory()->create();
+        Sanctum::actingAs($anotherUser);
+
+        $response = $this->patchJson('/api/item/' . $item->id, ['protein' => 40]);
+        $response->assertStatus(403);
+    }
+
+    #[Test]
+    public function it_throw_exception_if_item_not_found()
+    {
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+
+        $response = $this->patchJson('/api/item/9999', ['protein' => 40]);
+        $response->assertStatus(404);
     }
 
     #[Test]

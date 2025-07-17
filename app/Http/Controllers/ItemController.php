@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Item\StoreItemRequest;
 use App\Http\Requests\Item\UpdateItemRequest;
+use App\Models\Item;
 use App\Services\ItemService;
 
 class ItemController extends Controller
@@ -80,9 +81,9 @@ class ItemController extends Controller
      *      )
      *  )
      */
-    public function update(UpdateItemRequest $request, int $id)
+    public function update(UpdateItemRequest $request, Item $item)
     {
-        $this->itemService->update($id, $request->validated(), auth()->user());
+        $this->itemService->update($item, $request->validated());
     }
 
     /**

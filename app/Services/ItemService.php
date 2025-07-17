@@ -38,21 +38,8 @@ class ItemService
         ]);
     }
 
-    public function update(int $id, array $requestData, User $user): void
+    public function update(Item $item, array $requestData): void
     {
-        if (empty($requestData)) {
-            return;
-        }
-
-        $item = $this->itemRepository->findById($id);
-        if (!$item) {
-            throw new ModelNotFoundException("Not Found");
-        }
-
-        if ($user->cannot('update', $item)) {
-            throw new AuthorizationException();
-        }
-
         $updateData = UpdateItemData::fromRequest($requestData);
         $this->itemRepository->update($item, $updateData);
     }

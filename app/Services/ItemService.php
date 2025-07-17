@@ -8,8 +8,6 @@ use App\Models\Item;
 use App\Models\User;
 use App\Repositories\ItemRepo;
 use App\Repositories\RecordRepo;
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Carbon;
 
 class ItemService

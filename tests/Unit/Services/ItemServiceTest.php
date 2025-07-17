@@ -6,8 +6,6 @@ use App\Models\Item;
 use App\Models\Record;
 use App\Models\User;
 use App\Services\ItemService;
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -180,25 +178,6 @@ class ItemServiceTest extends TestCase
             'record_id' => $record->id,
         ]);
     }
-
-    // #[Test]
-    // public function it_does_not_allow_to_update_item_from_another_user()
-    // {
-    //     $user        = User::factory()->has(Record::factory()->has(Item::factory()))->create();
-    //     $item        = $user->records->first()->items->first();
-    //     $anotherUser = User::factory()->create();
-
-    //     $this->expectException(AuthorizationException::class);
-    //     $this->itemService->update($item, ['protein' => 40]);
-    // }
-
-    // #[Test]
-    // public function it_should_throw_exception_if_item_not_found()
-    // {
-    //     $item = Item::factory()->create();
-    //     $this->expectException(ModelNotFoundException::class);
-    //     $this->itemService->update($item, ['protein' => 40]);
-    // }
 
     #[Test]
     public function it_deletes_item()

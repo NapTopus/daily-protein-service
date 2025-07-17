@@ -22,7 +22,8 @@ class RecordRepo
         $to ??= Carbon::today();
         $records = Record::with('items')
             ->where('user_id', $user->id)
-            ->whereBetween('date', [$from->startOfDay(), $to->endOfDay()])
+            ->whereBetween('date', [$from->toDateString(), $to->toDateString()])
+            ->orderBy('date')
             ->get();
 
         return RecordResource::collection($records)->resolve();

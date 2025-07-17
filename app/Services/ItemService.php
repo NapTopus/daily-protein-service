@@ -44,16 +44,8 @@ class ItemService
         $this->itemRepository->update($item, $updateData);
     }
 
-    public function destroy(int $id, User $user)
+    public function destroy(Item $item)
     {
-        $item = $this->itemRepository->findById($id);
-        if (!$item) {
-            return;
-        }
-
-        if ($user->cannot('delete', $item)) {
-            throw new AuthorizationException();
-        }
-        $this->itemRepository->deleteById($id);
+        $this->itemRepository->deleteById($item->id);
     }
 }

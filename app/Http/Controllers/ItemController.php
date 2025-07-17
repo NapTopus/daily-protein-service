@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Item\DestroyItemRequest;
 use App\Http\Requests\Item\StoreItemRequest;
 use App\Http\Requests\Item\UpdateItemRequest;
 use App\Models\Item;
@@ -107,8 +108,8 @@ class ItemController extends Controller
      *      )
      *  )
      */
-    public function destroy(int $id)
+    public function destroy(DestroyItemRequest $request, Item $item)
     {
-        $this->itemService->destroy($id, auth()->user());
+        $this->itemService->destroy($item);
     }
 }

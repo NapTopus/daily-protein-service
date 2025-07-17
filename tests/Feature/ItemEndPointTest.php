@@ -94,4 +94,16 @@ class ItemEndPointTest extends TestCase
         $response->assertStatus(200);
         $this->assertDatabaseMissing('items', ['id' => $item->id]);
     }
+
+    #[Test]
+    public function it_cannot_delete_item_from_another_user()
+    {
+        $user        = User::factory()->has(Record::factory()->has(Item::factory()))->create();
+        $item        = $user->records->first()->items->first();
+        $anotherUser = User::factory()->create();
+        Sanctum::actingAs($anotherUser);
+
+        $response = $this->deleteJson('/api/item/' . $item->id);
+        $response->assertStatus(403);
+    }
 }

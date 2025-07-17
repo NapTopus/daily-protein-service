@@ -207,29 +207,7 @@ class ItemServiceTest extends TestCase
         $record = Record::factory()->for($user)->has(Item::factory())->create();
         $item   = $record->items->first();
 
-        $this->itemService->destroy($item->id, $user);
+        $this->itemService->destroy($item);
         $this->assertDatabaseMissing('items', ['id' => $item->id]);
-    }
-
-    #[Test]
-    public function it_does_not_allow_to_delete_item_from_another_user()
-    {
-        $user        = User::factory()->has(Record::factory()->has(Item::factory()))->create();
-        $item        = $user->records->first()->items->first();
-        $anotherUser = User::factory()->create();
-
-        $this->expectException(AuthorizationException::class);
-        $this->itemService->destroy($item->id, $anotherUser);
-    }
-
-    #[Test]
-    public function it_does_not_throw_if_id_is_not_found()
-    {
-        $user          = User::factory()->create();
-        $nonExistentId = 9999999;
-
-        $this->itemService->destroy($nonExistentId, $user);
-
-        $this->expectNotToPerformAssertions();
     }
 }

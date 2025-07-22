@@ -12,6 +12,37 @@ class RecordController extends Controller
     ) {
     }
 
+    /**
+     *  @OA\Get(
+     *      path="/api/record",
+     *      summary="查詢紀錄",
+     *      tags={"Record"},
+     *      security={{"sanctumAuth":{}}},
+     *      @OA\Parameter(
+     *          name="from",
+     *          in="query",
+     *          required=true,
+     *          description="查詢日期起始，只傳 from 就只查一天",
+     *      ),
+     *      @OA\Parameter(
+     *          name="to",
+     *          in="query",
+     *          description="查詢日期結束",
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="OK"
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          ref="#/components/responses/Unauthorized"
+     *      ),
+     *      @OA\Response(
+     *          response=422,
+     *          ref="#/components/responses/InvalidInput"
+     *      )
+     *  )
+     */
     public function showByDate(ShowRecordRequest $request)
     {
         return $this->recordService->showByDate($request->validated(), auth()->user());

@@ -6,7 +6,6 @@ use App\Http\Resources\RecordResource;
 use App\Models\Record;
 use App\Models\User;
 use App\Services\RecordService;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -49,5 +48,13 @@ class RecordServiceTest extends TestCase
 
         $actual = $this->recordService->showByDate(['from' => '2025-07-16'], $user);
         $this->assertEquals($expected, $actual);
+    }
+
+    #[Test]
+    public function it_can_delete_record()
+    {
+        $record = Record::factory()->for(User::factory())->create();
+        $this->recordService->destroy($record);
+        $this->assertDatabaseMissing('records', ['id' => $record->id]);
     }
 }

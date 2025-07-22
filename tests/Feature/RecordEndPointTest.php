@@ -31,4 +31,29 @@ class RecordEndPointTest extends TestCase
         $response->assertStatus(200);
         $response->assertExactJson($expected);
     }
+
+    #[Test]
+    public function it_can_delete_record()
+    {
+        $user   = User::factory()->create();
+        $record = Record::factory()->for($user)->create();
+        Sanctum::actingAs($user);
+
+        $response = $this->delete('/api/record/' . $record->id);
+        $response->assertStatus(200);
+        $this->assertDatabaseMissing('records', ['id' => $record->id]);
+    }
+
+    #[Test]
+    public function it_cannot_delete_another_user_record()
+    {
+        $user        = User::factory()->create();
+        $anotherUser = User::factory()->create();
+        $record      = Record::factory()->for($anotherUser)->create();
+        Sanctum::actingAs($user);
+
+        $response = $this->delete('/api/record/' . $record->id);
+        $response->assertStatus(403);
+        $this->assertDatabaseHas('records', ['id' => $record->id]);
+    }
 }

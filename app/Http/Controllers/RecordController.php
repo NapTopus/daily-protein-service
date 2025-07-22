@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Record\DestroyRecordRequest;
 use App\Http\Requests\Record\ShowRecordRequest;
+use App\Models\Record;
 use App\Services\RecordService;
 
 class RecordController extends Controller
@@ -46,5 +48,26 @@ class RecordController extends Controller
     public function showByDate(ShowRecordRequest $request)
     {
         return $this->recordService->showByDate($request->validated(), auth()->user());
+    }
+
+    /**
+     *  @OA\Delete(
+     *      path="/api/record",
+     *      summary="刪除紀錄",
+     *      tags={"Record"},
+     *      security={{"sanctumAuth":{}}},
+     *      @OA\Response(
+     *          response=200,
+     *          description="OK"
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          ref="#/components/responses/Unauthorized"
+     *      ),
+     *  )
+     */
+    public function destroy(DestroyRecordRequest $request, Record $record)
+    {
+        $this->recordService->destroy($record);
     }
 }

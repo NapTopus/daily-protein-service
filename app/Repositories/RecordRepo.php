@@ -28,4 +28,9 @@ class RecordRepo
 
         return RecordResource::collection($records)->resolve();
     }
+
+    public function destroy(int $id)
+    {
+        Record::destroy($id);
+    }
 }

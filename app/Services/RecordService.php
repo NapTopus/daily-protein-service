@@ -16,7 +16,7 @@ class RecordService
     public function showByDate(array $requestData, User $user)
     {
         $from = Carbon::parse($requestData['from']);
-        $to   = empty($requestData['to']) ? Carbon::today() : Carbon::parse($requestData['to']);
+        $to   = empty($requestData['to']) ? $from : Carbon::parse($requestData['to']);
         return $this->recordRepo->getByDate($user, $from, $to);
     }
 }

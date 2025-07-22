@@ -38,19 +38,16 @@ class RecordServiceTest extends TestCase
     }
 
     #[Test]
-    public function it_defaults_to_today_when_to_is_missing()
+    public function it_show_one_day_record_when_to_is_missing()
     {
-        Carbon::setTestNow(Carbon::parse('2025-07-16'));
-
         $user            = User::factory()->create();
-        $record1         = Record::factory()->for($user)->state(['date' => '2025-07-01'])->create();
-        $record2         = Record::factory()->for($user)->state(['date' => '2025-07-15'])->create();
-        $record3         = Record::factory()->for($user)->state(['date' => '2025-07-16'])->create();
-        $record4         = Record::factory()->for($user)->state(['date' => '2025-07-17'])->create();
-        $expectedRecords = collect([$record1, $record2, $record3])->each->load('items');
+        $record1         = Record::factory()->for($user)->state(['date' => '2025-07-15'])->create();
+        $record2         = Record::factory()->for($user)->state(['date' => '2025-07-16'])->create();
+        $record3         = Record::factory()->for($user)->state(['date' => '2025-07-17'])->create();
+        $expectedRecords = collect([$record2])->each->load('items');
         $expected        = RecordResource::collection($expectedRecords)->resolve();
 
-        $actual = $this->recordService->showByDate(['from' => '2025-07-01'], $user);
+        $actual = $this->recordService->showByDate(['from' => '2025-07-16'], $user);
         $this->assertEquals($expected, $actual);
     }
 }

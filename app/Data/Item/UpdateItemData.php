@@ -2,12 +2,12 @@
 
 namespace App\Data\Item;
 
-use App\Traits\ToUpdateArrayTrait;
+use App\Traits\ToArrayTrait;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateItemData extends FormRequest
 {
-    use ToUpdateArrayTrait;
+    use ToArrayTrait;
 
     public function __construct(
         public ?string $name = null,

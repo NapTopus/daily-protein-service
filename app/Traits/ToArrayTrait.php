@@ -2,9 +2,9 @@
 
 namespace App\Traits;
 
-trait ToUpdateArrayTrait
+trait ToArrayTrait
 {
-    public function toUpdateArray(): array
+    public function toArray(): array
     {
         return array_filter(get_object_vars($this), fn ($value) => $value !== null);
     }

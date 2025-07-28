@@ -11,7 +11,7 @@ return new class () extends Migration {
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->decimal('default_target', 7, 2)->default(80)->after('password');
+            $table->double('default_target')->default(80)->after('password');
         });
     }
 

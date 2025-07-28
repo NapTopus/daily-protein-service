@@ -13,7 +13,7 @@ return new class () extends Migration {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->decimal('protein', 7, 2);
+            $table->double('protein');
             $table->foreignId('record_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

@@ -13,7 +13,7 @@ return new class () extends Migration {
         Schema::create('records', function (Blueprint $table) {
             $table->id();
             $table->date('date');
-            $table->decimal('target', 7, 2);
+            $table->double('target');
             $table->timestamps();
         });
     }

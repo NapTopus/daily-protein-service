@@ -122,6 +122,7 @@
             position: fixed;
             right: 1rem;
             bottom: 1rem;
+            z-index: 9999;
             width: 40px;
             height: 40px;
             border-radius: 9999px;

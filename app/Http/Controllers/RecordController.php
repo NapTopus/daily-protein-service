@@ -45,7 +45,7 @@ class RecordController extends Controller
      *      )
      *  )
      */
-    public function showByDate(ShowRecordRequest $request)
+    public function index(ShowRecordRequest $request)
     {
         return $this->recordService->showByDate($request->validated(), auth()->user());
     }

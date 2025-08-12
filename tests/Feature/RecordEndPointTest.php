@@ -27,7 +27,9 @@ class RecordEndPointTest extends TestCase
 
         Sanctum::actingAs($user);
 
-        $response = $this->get('/api/record?from=2025-07-01&to=2025-07-30');
+        $response = $this->get(
+            route('records.show', ['from' => '2025-07-01', 'to' => '2025-07-30'])
+        );
         $response->assertStatus(200);
         $response->assertExactJson($expected);
     }
@@ -39,7 +41,7 @@ class RecordEndPointTest extends TestCase
         $record = Record::factory()->for($user)->create();
         Sanctum::actingAs($user);
 
-        $response = $this->delete('/api/record/' . $record->id);
+        $response = $this->delete(route('records.destroy', ['record' => $record->id]));
         $response->assertStatus(200);
         $this->assertDatabaseMissing('records', ['id' => $record->id]);
     }
@@ -52,7 +54,7 @@ class RecordEndPointTest extends TestCase
         $record      = Record::factory()->for($anotherUser)->create();
         Sanctum::actingAs($user);
 
-        $response = $this->delete('/api/record/' . $record->id);
+        $response = $this->delete(route('records.destroy', ['record' => $record->id]));
         $response->assertStatus(403);
         $this->assertDatabaseHas('records', ['id' => $record->id]);
     }

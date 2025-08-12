@@ -25,7 +25,7 @@ class ItemEndPointTest extends TestCase
             "protein" => 12
         ];
 
-        $response = $this->postJson('/api/item', $payload);
+        $response = $this->postJson(route('items.store'), $payload);
         $response->assertStatus(200);
         $this->assertDatabaseHas('items', [
             "name"    => "egg",
@@ -42,7 +42,7 @@ class ItemEndPointTest extends TestCase
         $record = Record::factory()->for($user)->has(Item::factory()->state(['name' => 'Chicken', 'protein' => 30.5]))->create();
         $item   = $record->items->first();
 
-        $response = $this->patchJson('/api/item/' . $item->id, ['protein' => 40]);
+        $response = $this->patchJson(route('items.update', ['item' => $item->id]), ['protein' => 40]);
         $response->assertStatus(200);
         $this->assertDatabaseHas('items', [
             'name'      => 'Chicken',
@@ -55,7 +55,7 @@ class ItemEndPointTest extends TestCase
     public function it_cannot_update_item_without_login()
     {
         $item     = Item::factory()->for(Record::factory()->for(User::factory()))->create();
-        $response = $this->patchJson('/api/item/' . $item->id, ['protein' => 40]);
+        $response = $this->patchJson(route('items.update', ['item' => $item->id]), ['protein' => 40]);
         $response->assertStatus(401);
     }
 
@@ -67,7 +67,7 @@ class ItemEndPointTest extends TestCase
         $anotherUser = User::factory()->create();
         Sanctum::actingAs($anotherUser);
 
-        $response = $this->patchJson('/api/item/' . $item->id, ['protein' => 40]);
+        $response = $this->patchJson(route('items.update', ['item' => $item->id]), ['protein' => 40]);
         $response->assertStatus(403);
     }
 
@@ -77,7 +77,7 @@ class ItemEndPointTest extends TestCase
         $user = User::factory()->create();
         Sanctum::actingAs($user);
 
-        $response = $this->patchJson('/api/item/9999', ['protein' => 40]);
+        $response = $this->patchJson(route('items.update', ['item' => '9999']), ['protein' => 40]);
         $response->assertStatus(404);
     }
 
@@ -90,7 +90,7 @@ class ItemEndPointTest extends TestCase
         $record = Record::factory()->for($user)->has(Item::factory())->create();
         $item   = $record->items->first();
 
-        $response = $this->deleteJson('/api/item/' . $item->id);
+        $response = $this->deleteJson(route('items.destroy', ['item' => $item->id]));
         $response->assertStatus(200);
         $this->assertDatabaseMissing('items', ['id' => $item->id]);
     }
@@ -103,7 +103,7 @@ class ItemEndPointTest extends TestCase
         $anotherUser = User::factory()->create();
         Sanctum::actingAs($anotherUser);
 
-        $response = $this->deleteJson('/api/item/' . $item->id);
+        $response = $this->deleteJson(route('items.destroy', ['item' => $item->id]));
         $response->assertStatus(403);
     }
 }

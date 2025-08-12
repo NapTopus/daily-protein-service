@@ -24,7 +24,7 @@ class RateLimitTest extends TestCase
         Sanctum::actingAs($user);
 
         $send = function (): TestResponse {
-            return $this->getJson('/api/record?from=2025-08-12');
+            return $this->getJson(route('records.show', ['from' => '2025-08-12']));
         };
         for ($i = 0; $i < 120; $i++) {
             $send()->assertStatus(200);
@@ -45,7 +45,7 @@ class RateLimitTest extends TestCase
         Sanctum::actingAs($user);
 
         $send = function (): TestResponse {
-            return $this->postJson('/api/item', [
+            return $this->postJson(route('items.store'), [
                 "name"    => "egg",
                 "protein" => 12
             ]);
@@ -67,7 +67,7 @@ class RateLimitTest extends TestCase
         $this->freezeTime();
 
         $send = function (): TestResponse {
-            return $this->postJson('/api/login', [
+            return $this->postJson(route('login'), [
                 'email'    => fake()->unique()->safeEmail(),
                 'password' => 'password',
             ]);
@@ -89,7 +89,7 @@ class RateLimitTest extends TestCase
 
         $this->freezeTime();
         $send = function (): TestResponse {
-            return $this->postJson('/api/register', [
+            return $this->postJson(route('register'), [
                 'name'                  => fake()->name(),
                 'email'                 => fake()->unique()->safeEmail(),
                 'password'              => 'password',

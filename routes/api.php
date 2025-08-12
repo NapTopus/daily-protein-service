@@ -7,18 +7,18 @@ use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/api/documentation');
 
-Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:register');
-Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:login');
+Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:register')->name('register');
+Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:login')->name('login');
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('throttle:writes')->group(function () {
-        Route::post('/item', [ItemController::class, 'store']);
-        Route::patch('/item/{item}', [ItemController::class, 'update']);
-        Route::delete('/item/{item}', [ItemController::class, 'destroy']);
-        Route::delete('/record/{record}', [RecordController::class, 'destroy']);
+        Route::post('/items', [ItemController::class, 'store'])->name('items.store');
+        Route::patch('/items/{item}', [ItemController::class, 'update'])->name('items.update');
+        Route::delete('/items/{item}', [ItemController::class, 'destroy'])->name('items.destroy');
+        Route::delete('/records/{record}', [RecordController::class, 'destroy'])->name('records.destroy');
     });
 
     Route::middleware('throttle:api')->group(function () {
-        Route::get('/record', [RecordController::class, 'index']);
+        Route::get('/records', [RecordController::class, 'show'])->name('records.show');
     });
 });

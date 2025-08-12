@@ -17,7 +17,7 @@ class ItemController extends Controller
 
     /**
      *  @OA\Post(
-     *      path="/api/item",
+     *      path="/api/items",
      *      summary="創建項目",
      *      tags={"Item"},
      *      security={{"sanctumAuth":{}}},
@@ -52,7 +52,7 @@ class ItemController extends Controller
 
     /**
      *  @OA\Patch(
-     *      path="/api/item/{id}",
+     *      path="/api/items/{id}",
      *      summary="修改項目",
      *      tags={"Item"},
      *      security={{"sanctumAuth":{}}},
@@ -89,7 +89,7 @@ class ItemController extends Controller
 
     /**
      *  @OA\Delete(
-     *      path="/api/item/{id}",
+     *      path="/api/items/{id}",
      *      summary="刪除項目",
      *      tags={"Item"},
      *      security={{"sanctumAuth":{}}},

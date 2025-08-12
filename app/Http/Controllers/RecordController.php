@@ -16,7 +16,7 @@ class RecordController extends Controller
 
     /**
      *  @OA\Get(
-     *      path="/api/record",
+     *      path="/api/records",
      *      summary="查詢紀錄",
      *      tags={"Record"},
      *      security={{"sanctumAuth":{}}},
@@ -45,14 +45,14 @@ class RecordController extends Controller
      *      )
      *  )
      */
-    public function index(ShowRecordRequest $request)
+    public function show(ShowRecordRequest $request)
     {
         return $this->recordService->showByDate($request->validated(), auth()->user());
     }
 
     /**
      *  @OA\Delete(
-     *      path="/api/record",
+     *      path="/api/records",
      *      summary="刪除紀錄",
      *      tags={"Record"},
      *      security={{"sanctumAuth":{}}},

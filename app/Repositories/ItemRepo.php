@@ -21,7 +21,6 @@ class ItemRepo
     public function update(Item $item, UpdateItemData $updateData): Item
     {
         $item->update($updateData->toArray());
-        $item->save();
         return $item;
     }
 

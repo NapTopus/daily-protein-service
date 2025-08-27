@@ -33,7 +33,11 @@ class RecordController extends Controller
      *      ),
      *      @OA\Response(
      *          response=200,
-     *          description="OK"
+     *          description="OK",
+     *          @OA\JsonContent(
+     *              type="array",
+     *              @OA\Items(ref="#/components/schemas/RecordSchema")
+     *          )
      *      ),
      *      @OA\Response(
      *          response=403,

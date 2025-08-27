@@ -21,6 +21,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::middleware('throttle:api')->group(function () {
+        Route::get('/users/me', [UserController::class, 'me'])->name('users.me');
         Route::get('/records', [RecordController::class, 'show'])->name('records.show');
     });
 });

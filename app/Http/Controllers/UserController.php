@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\User\UpdateDefaultTargetRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Services\UserService;
 
@@ -11,6 +12,12 @@ class UserController extends Controller
     public function __construct(
         private readonly UserService $userService
     ) {
+    }
+
+    public function me()
+    {
+        $user = $this->userService->me();
+        return (new UserResource($user))->resolve();
     }
 
     /**

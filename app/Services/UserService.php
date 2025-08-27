@@ -11,6 +11,11 @@ class UserService
     {
     }
 
+    public function me(): User
+    {
+        return auth()->user();
+    }
+
     public function updateDefaultTarget(array $requestData, User $user)
     {
         $this->userRepo->updateDefaultTarget($user, $requestData['target']);

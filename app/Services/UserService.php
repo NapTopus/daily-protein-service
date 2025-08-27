@@ -17,8 +17,8 @@ class UserService
         return auth()->user();
     }
 
-    public function updateDefaultTarget(array $requestData, User $user)
+    public function update(array $requestData, User $user)
     {
-        $this->userRepo->updateDefaultTarget($user, $requestData['target']);
+        $this->userRepo->update($user, $requestData['target']);
     }
 }

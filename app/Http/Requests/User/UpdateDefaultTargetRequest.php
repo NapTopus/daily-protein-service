@@ -11,8 +11,7 @@ class UpdateDefaultTargetRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        $user = $this->route('user');
-        return $this->user()->id === $user->id;
+        return true;
     }
 
     /**

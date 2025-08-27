@@ -29,7 +29,7 @@ class UserServiceTest extends TestCase
             'target' => $newTarget,
         ];
 
-        $this->userService->updateDefaultTarget($requestData, $user);
+        $this->userService->update($requestData, $user);
 
         $this->assertDatabaseHas('users', [
             'id'             => $user->id,

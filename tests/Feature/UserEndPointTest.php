@@ -37,7 +37,7 @@ class UserEndPointTest extends TestCase
         $newTarget = 789.89;
 
         $response = $this->patch(
-            route('users.updateDefaultTarget', ['user' => $user->id]),
+            route('users.update'),
             [
                 'target' => $newTarget
             ]
@@ -49,23 +49,5 @@ class UserEndPointTest extends TestCase
             'id'             => $user->id,
             'default_target' => $newTarget
         ]);
-    }
-
-    #[Test]
-    public function it_cannot_update_default_target_from_another_user()
-    {
-        $user        = User::factory()->create();
-        $anotherUser = User::factory()->create();
-        Sanctum::actingAs($user);
-        $newTarget = 789.89;
-
-        $response = $this->patch(
-            route('users.updateDefaultTarget', ['user' => $anotherUser->id]),
-            [
-                'target' => $newTarget
-            ]
-        );
-
-        $response->assertStatus(403);
     }
 }

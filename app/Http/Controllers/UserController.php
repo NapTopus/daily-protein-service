@@ -43,15 +43,10 @@ class UserController extends Controller
 
     /**
      *  @OA\Patch(
-     *      path="/api/users/{id}/defaultTarget",
-     *      summary="修改預設蛋白質目標",
+     *      path="/api/users/me",
+     *      summary="修改用戶資訊",
      *      tags={"User"},
      *      security={{"sanctumAuth":{}}},
-     *      @OA\Parameter(
-     *          name="id",
-     *          in="path",
-     *          required=true,
-     *      ),
      *      @OA\RequestBody(
      *          @OA\JsonContent(
      *              type="object",
@@ -72,8 +67,8 @@ class UserController extends Controller
      *      )
      *  )
      */
-    public function updateDefaultTarget(UpdateDefaultTargetRequest $request, User $user)
+    public function update(UpdateDefaultTargetRequest $request)
     {
-        $this->userService->updateDefaultTarget($request->validated(), $user);
+        $this->userService->update($request->validated(), auth()->user());
     }
 }

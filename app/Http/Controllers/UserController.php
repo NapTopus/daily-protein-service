@@ -35,9 +35,9 @@ class UserController extends Controller
      *      )
      *  )
      */
-    public function me()
+    public function show()
     {
-        $user = $this->userService->me();
+        $user = $this->userService->show();
         return (new UserResource($user))->resolve();
     }
 

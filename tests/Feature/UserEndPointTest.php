@@ -18,7 +18,7 @@ class UserEndPointTest extends TestCase
         $user = User::factory()->create();
         Sanctum::actingAs($user);
 
-        $response = $this->get(route('users.me'));
+        $response = $this->get(route('users.show'));
         $response
             ->assertStatus(200)
             ->assertExactJson([

@@ -12,7 +12,7 @@ class UserService
     ) {
     }
 
-    public function me(): User
+    public function show(): User
     {
         return auth()->user();
     }

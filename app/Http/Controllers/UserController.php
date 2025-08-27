@@ -14,6 +14,27 @@ class UserController extends Controller
     ) {
     }
 
+    /**
+     *  @OA\Get(
+     *      path="/api/users/me",
+     *      summary="取得用戶資訊",
+     *      tags={"User"},
+     *      security={{"sanctumAuth":{}}},
+     *      @OA\Response(
+     *          response=200,
+     *          description="OK",
+     *          @OA\JsonContent(ref="#/components/schemas/UserSchema")
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          ref="#/components/responses/Unauthorized"
+     *      ),
+     *      @OA\Response(
+     *          response=422,
+     *          ref="#/components/responses/InvalidInput"
+     *      )
+     *  )
+     */
     public function me()
     {
         $user = $this->userService->me();

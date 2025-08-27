@@ -7,8 +7,9 @@ use App\Repositories\UserRepo;
 
 class UserService
 {
-    public function __construct(private readonly UserRepo $userRepo)
-    {
+    public function __construct(
+        private readonly UserRepo $userRepo
+    ) {
     }
 
     public function me(): User

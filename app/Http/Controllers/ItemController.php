@@ -11,7 +11,7 @@ use App\Services\ItemService;
 class ItemController extends Controller
 {
     public function __construct(
-        private ItemService $itemService
+        private readonly ItemService $itemService
     ) {
     }
 

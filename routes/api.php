@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\RecordController;
 use App\Http\Controllers\UserController;
@@ -18,6 +19,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::patch('/items/{item}', [ItemController::class, 'update'])->name('items.update');
         Route::delete('/items/{item}', [ItemController::class, 'destroy'])->name('items.destroy');
         Route::delete('/records/{record}', [RecordController::class, 'destroy'])->name('records.destroy');
+        Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
+        Route::post('/favorites', [FavoriteController::class, 'store'])->name('favorites.store');
+        Route::delete('/favorites/{favorite}', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
     });
 
     Route::middleware('throttle:api')->group(function () {

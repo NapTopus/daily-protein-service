@@ -3,12 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Favorite\DestroyFavoriteRequest;
-use App\Http\Requests\Favorite\ShowFavoriteRequest;
 use App\Http\Requests\Favorite\StoreFavoriteRequest;
-use App\Http\Resources\FavoriteResource;
 use App\Models\Favorite;
 use App\Services\FavoriteService;
-use Illuminate\Http\Request;
 
 class FavoriteController extends Controller
 {
@@ -76,8 +73,7 @@ class FavoriteController extends Controller
      */
     public function index()
     {
-        $favorites = $this->favoriteService->queryAll(auth()->user());
-        return FavoriteResource::collection($favorites)->resolve();
+        return $this->favoriteService->queryAll(auth()->user());
     }
 
     /**

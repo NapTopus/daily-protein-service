@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Http\Resources\FavoriteResource;
 use App\Models\Favorite;
 use App\Models\User;
 
@@ -14,7 +15,7 @@ class FavoriteRepo
 
     public function queryAll(User $user)
     {
-        return $user->favorites;
+        return FavoriteResource::collection($user->favorites)->resolve();
     }
 
     public function deleteById(string $id)

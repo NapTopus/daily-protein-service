@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -21,8 +20,8 @@ class AuthController extends Controller
      *              type="object",
      *              @OA\Property(property="name", type="string", example="your-name"),
      *              @OA\Property(property="email", type="string", example="example@your-mail.com"),
-     *              @OA\Property(property="password", type="string", example="your-password"),
-     *              @OA\Property(property="password_confirmation", type="string", example="your-password")
+     *              @OA\Property(property="password", type="string", example="your-password123", description="至少 8 個字元，至少 1 個大寫字母、1 個小寫字母、1 個數字"),
+     *              @OA\Property(property="password_confirmation", type="string", example="your-password123")
      *          )
      *      ),
      *      @OA\Response(

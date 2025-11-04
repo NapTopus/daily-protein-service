@@ -21,7 +21,7 @@ class AuthController extends Controller
      *              @OA\Property(property="name", type="string", example="your-name"),
      *              @OA\Property(property="email", type="string", example="example@your-mail.com"),
      *              @OA\Property(property="password", type="string", example="your-password123", description="至少 8 個字元，至少 1 個大寫字母、1 個小寫字母、1 個數字"),
-     *              @OA\Property(property="password_confirmation", type="string", example="your-password123")
+     *              @OA\Property(property="passwordConfirmation", type="string", example="your-password123")
      *          )
      *      ),
      *      @OA\Response(

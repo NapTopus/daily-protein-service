@@ -90,10 +90,10 @@ class RateLimitTest extends TestCase
         $this->freezeTime();
         $send = function (): TestResponse {
             return $this->postJson(route('register'), [
-                'name'                  => fake()->name(),
-                'email'                 => fake()->unique()->safeEmail(),
-                'password'              => 'password',
-                'password_confirmation' => 'password'
+                'name'                 => fake()->name(),
+                'email'                => fake()->unique()->safeEmail(),
+                'password'             => 'password123',
+                'passwordConfirmation' => 'password123'
             ]);
         };
 

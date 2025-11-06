@@ -48,5 +48,21 @@ class AppServiceProvider extends ServiceProvider
                 Limit::perHour(10)->by($key),
             ];
         });
+
+        RateLimiter::for('refresh-token', function (Request $request) {
+            $token = $request->cookie('refreshToken');
+
+            if (!$token) {
+                $key = 'ip:' . ($request->ip());
+                return [
+                    Limit::perMinute(60)->by($key),
+                ];
+            }
+
+            $key = 'refresh:token:' . hash('sha256', $token);
+            return [
+                Limit::perMinute(5)->by($key),
+            ];
+        });
     }
 }

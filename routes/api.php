@@ -11,6 +11,7 @@ Route::redirect('/', '/api/documentation');
 
 Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:register')->name('register');
 Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:login')->name('login');
+Route::get('/refresh', [AuthController::class, 'refresh'])->middleware('throttle:refresh-token')->name('refresh');
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('throttle:writes')->group(function () {

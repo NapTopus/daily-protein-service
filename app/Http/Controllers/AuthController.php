@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Models\RefreshToken;
 use App\Models\User;
+use Str;
 
 class AuthController extends Controller
 {
@@ -58,7 +60,7 @@ class AuthController extends Controller
      *          description="OK",
      *          @OA\JsonContent(
      *              type="object",
-     *              @OA\Property(property="token", type="string", example="7|654FPqe0oZzujUfiCl8VYnsD09cnEhXxNbcrvwVG722155b9"),
+     *              @OA\Property(property="authToken", type="string", example="7|654FPqe0oZzujUfiCl8VYnsD09cnEhXxNbcrvwVG722155b9"),
      *          )
      *      ),
      *      @OA\Response(
@@ -77,10 +79,63 @@ class AuthController extends Controller
 
         $user = auth()->user();
 
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return response()->json([
-            'token' => $token,
+        $accessToken  = $user->createToken('auth_token')->plainTextToken;
+        $refreshToken = Str::random(64);
+        RefreshToken::create([
+            'user_id'    => $user->id,
+            'token'      => hash('sha256', $refreshToken),
+            'expires_at' => now()->addDays(7)
         ]);
+
+        $SEVEN_DAYS = 60 * 24 * 7;
+        $path       = '/';
+        $domain     = null;
+        $secure     = env('APP_DEBUG') ? false : true;
+        $httpOnly   = true;
+        return response()
+            ->json(['authToken' => $accessToken])
+            ->cookie('refreshToken', $refreshToken, $SEVEN_DAYS, $path, $domain, $secure, $httpOnly);
+    }
+
+    /**
+     *  @OA\Get(
+     *      path="/api/refresh",
+     *      summary="透過 cookie 的 refresh token 拿 auth token",
+     *      tags={"Auth"},
+     *      @OA\Response(
+     *          response=200,
+     *          description="OK",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="authToken", type="string", example="7|654FPqe0oZzujUfiCl8VYnsD09cnEhXxNbcrvwVG722155b9"),
+     *          )
+     *      ),
+     *  )
+     */
+    public function refresh()
+    {
+        $refreshTokenFromCookie = request()->cookie('refreshToken');
+
+        if (!$refreshTokenFromCookie) {
+            return response()->json([
+                'message' => 'Invalid credentials',
+            ], 401);
+        }
+
+        $refreshToken = RefreshToken::where('token', hash('sha256', $refreshTokenFromCookie))
+            ->where('revoked', false)
+            ->where('expires_at', '>', now())
+            ->first();
+
+        if (!$refreshToken) {
+            return response()->json([
+                'message' => 'Invalid credentials',
+            ], 401);
+        }
+
+        $user        = $refreshToken->user;
+        $accessToken = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json(['authToken' => $accessToken]);
     }
 }

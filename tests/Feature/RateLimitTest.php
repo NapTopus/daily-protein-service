@@ -114,4 +114,48 @@ class RateLimitTest extends TestCase
 
         $send()->assertStatus(200);
     }
+
+    #[Test]
+    public function test_refresh_token_rate_limit()
+    {
+        config()->set('cache.default', 'array');
+        Cache::flush();
+
+        $this->freezeTime();
+        $send = function (): TestResponse {
+            return $this->withUnencryptedCookie('refreshToken', '123456789')->get(route('refresh'));
+        };
+
+        for ($i = 0; $i < 5; $i++) {
+            $send()->assertStatus(401);
+        }
+
+        $send()->assertStatus(429);
+
+        $this->travel(1)->minutes();
+
+        $send()->assertStatus(401);
+    }
+
+    #[Test]
+    public function test_refresh_token_ip_rate_limit()
+    {
+        config()->set('cache.default', 'array');
+        Cache::flush();
+
+        $this->freezeTime();
+        $send = function (): TestResponse {
+            return $this->get(route('refresh'));
+        };
+
+        for ($i = 0; $i < 60; $i++) {
+            $send()->assertStatus(401);
+        }
+
+        $send()->assertStatus(429);
+
+        $this->travel(1)->minutes();
+
+        $send()->assertStatus(401);
+    }
 }

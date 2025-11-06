@@ -67,7 +67,7 @@ class RateLimitTest extends TestCase
         $this->freezeTime();
 
         $send = function (): TestResponse {
-            return $this->postJson(route('login'), [
+            return $this->postJson(route('auth.login'), [
                 'email'    => fake()->unique()->safeEmail(),
                 'password' => 'password',
             ]);
@@ -89,7 +89,7 @@ class RateLimitTest extends TestCase
 
         $this->freezeTime();
         $send = function (): TestResponse {
-            return $this->postJson(route('register'), [
+            return $this->postJson(route('auth.register'), [
                 'name'                 => fake()->name(),
                 'email'                => fake()->unique()->safeEmail(),
                 'password'             => 'password123',
@@ -123,7 +123,7 @@ class RateLimitTest extends TestCase
 
         $this->freezeTime();
         $send = function (): TestResponse {
-            return $this->withUnencryptedCookie('refreshToken', '123456789')->get(route('refresh'));
+            return $this->withUnencryptedCookie('refreshToken', '123456789')->get(route('auth.refresh'));
         };
 
         for ($i = 0; $i < 5; $i++) {
@@ -145,7 +145,7 @@ class RateLimitTest extends TestCase
 
         $this->freezeTime();
         $send = function (): TestResponse {
-            return $this->get(route('refresh'));
+            return $this->get(route('auth.refresh'));
         };
 
         for ($i = 0; $i < 60; $i++) {

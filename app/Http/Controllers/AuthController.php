@@ -12,7 +12,7 @@ class AuthController extends Controller
 {
     /**
      *  @OA\Post(
-     *      path="/api/register",
+     *      path="/api/auth/register",
      *      summary="用戶註冊",
      *      tags={"Auth"},
      *      @OA\RequestBody(
@@ -43,7 +43,7 @@ class AuthController extends Controller
 
     /**
      *  @OA\Post(
-     *      path="/api/login",
+     *      path="/api/auth/login",
      *      summary="用戶登入",
      *      tags={"Auth"},
      *      @OA\RequestBody(
@@ -99,7 +99,7 @@ class AuthController extends Controller
 
     /**
      *  @OA\Get(
-     *      path="/api/refresh",
+     *      path="/api/auth/refresh",
      *      summary="透過 cookie 的 refresh token 拿 auth token",
      *      tags={"Auth"},
      *      @OA\Response(

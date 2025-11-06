@@ -79,7 +79,11 @@ class AuthController extends Controller
 
         $user = auth()->user();
 
-        $accessToken  = $user->createToken('auth_token')->plainTextToken;
+        $accessToken = $user->createToken(
+            'auth_token',
+            ['*'],
+            now()->addMinutes(30)
+        )->plainTextToken;
         $refreshToken = Str::random(64);
         RefreshToken::create([
             'user_id'    => $user->id,

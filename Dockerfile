@@ -31,13 +31,7 @@ RUN chown -R www-data:www-data storage bootstrap/cache
 
 RUN docker-php-ext-install opcache
 
-COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
-
-RUN chmod +x /usr/local/bin/entrypoint.sh
-
 USER www-data
-
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 CMD [ "php-fpm" ]
 
